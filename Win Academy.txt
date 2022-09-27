@@ -1,0 +1,63 @@
+------------------------------------------------------------------------------------------
+
+----------------------------select users  anas role and college --------------------------
+
+SELECT users.nom , users.prenom  , colleges.college_nom , roles.nom  FROM users INNER JOIN colleges ON colleges.college_numero = users.college_numero  INNER JOIN roles ON  roles.role_id = users.role_id ;
+
+-------------------------------------select all users role = etudiant --------------------
+
+SELECT users.nom , users.prenom  , colleges.college_nom , roles.nom  FROM users INNER JOIN colleges ON colleges.college_numero = users.college_numero  INNER JOIN roles ON  roles.role_id = users.role_id WHERE roles.nom = 'etudiant'  ;
+
+------------------------- select all user and group --------------------------------------
+
+SELECT users.nom , users.prenom , groupes.groupe_nom FROM users INNER JOIN etudiants ON etudiants.enseignant_id = users.user_id INNER JOIN groupes ON groupes.groupe_id = users.user_id;
+
+
+SELECT matieres.matiere_nom,CONCAT(users.nom,' ',users.prenom) FROM matieres INNER JOIN enseignants ON enseignants.matiere_id=matieres.matiere_id INNER JOIN users ON users.user_id=enseignants.user_id;
+
+
+SELECT users.nom,users.prenom,COUNT(etudiants.enseignant_id)  AS 'nombre_etudiant' FROM users INNER JOIN enseignants ON enseignants.user_id = users.user_id INNER JOIN etudiants ON etudiants.enseignant_id=enseignants.user_id WHERE etudiants.enseignant_id=enseignants.user_id GROUP BY etudiants.enseignant_id;
+
+------------------------nombre_d'etudiant sur chaque colleges---------------------------------------------------
+
+SELECT colleges.college_nom,COUNT(etudiants.user_id) AS nombre_etudiant FROM etudiants INNER JOIN users ON users.user_id=etudiants.user_id INNER JOIN colleges ON users.college_numero=colleges.college_numero WHERE users.college_numero=colleges.college_numero GROUP BY users.college_numero;
+
+-------------------------nombre de college par ville-------------------------------------------------------------------------------------
+
+SELECT villes.ville_nom,COUNT(colleges.college_numero) AS nombre_college FROM villes INNER JOIN adresses ON adresses.ville_id=villes.ville_id INNER JOIN colleges ON colleges.college_numero=adresses.college_numero GROUP BY villes.ville_nom;
+
+-------------------------nombre d'etudiant par ville-----------------------------------------------------
+
+SELECT villes.ville_nom,COUNT(etudiants.user_id) AS nombre_college FROM villes INNER JOIN adresses ON adresses.ville_id=villes.ville_id INNER JOIN colleges ON colleges.college_numero=adresses.college_numero INNER JOIN users ON users.college_numero=colleges.college_numero INNER JOIN etudiants ON etudiants.user_id=users.user_id GROUP BY villes.ville_nom;
+
+------------------------- nombre d'etudiant par college grouper par ville----------------------------------------------------------------------
+
+SELECT villes.ville_nom,colleges.college_nom,COUNT(etudiants.user_id) AS nombre_etudiant FROM villes INNER JOIN adresses ON adresses.ville_id=villes.ville_id INNER JOIN colleges ON colleges.college_numero=adresses.college_numero INNER JOIN users ON users.college_numero=colleges.college_numero INNER JOIN etudiants ON etudiants.user_id=users.user_id GROUP BY colleges.college_nom;
+
+------------------------moyenne de note par matiere---------------------------------------------------
+
+SELECT matieres.matiere_nom,ROUND(AVG(notes.valeur),2) AS moyenne FROM notes INNER JOIN matieres ON matieres.matiere_id=notes.matiere_id GROUP BY matieres.matiere_nom;
+ 
+--------------------------------- nom prenom college matiere et la note d'etudiant pour chaque matiere ---------------------------------------------------------
+
+SELECT users.nom,users.prenom,colleges.college_nom,matieres.matiere_nom,notes.valeur FROM notes INNER JOIN etudiants ON etudiants.user_id=notes.user_etudiant_id INNER JOIN matieres ON matieres.matiere_id=notes.matiere_id INNER JOIN colleges ON colleges.college_numero=matieres.college_numero INNER JOIN users ON users.user_id=etudiants.user_id WHERE etudiants.user_id=3;
+
+---------------------------------------moyenne_generale----------------------------------------------------------------
+
+SELECT users.nom,users.prenom,colleges.college_nom,ROUND(AVG(notes.valeur),2) AS moyenne_generale FROM notes INNER JOIN etudiants ON etudiants.user_id=notes.user_etudiant_id INNER JOIN matieres ON matieres.matiere_id=notes.matiere_id INNER JOIN colleges ON colleges.college_numero=matieres.college_numero INNER JOIN users ON users.user_id=etudiants.user_id GROUP BY users.user_id;
+
+
+--------------------------------------------------- select all enseignants
+
+SELECT users.nom , users.prenom , departements.nom_departement FROM enseignants INNER JOIN users ON users.user_id = enseignants.user_id INNER JOIN departements ON departements.departement_id = enseignants.depatement_id;
+
+-------------------------------------------------------------------
+
+
+SELECT users.nom , users.prenom  , colleges.college_nom , roles.nom  FROM users INNER JOIN colleges ON colleges.college_numero = users.college_numero  INNER JOIN roles ON  roles.role_id = users.role_id WHERE roles.nom = 'etudiant';
+
+
+
+
+
+
